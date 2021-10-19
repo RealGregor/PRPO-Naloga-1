@@ -12,6 +12,7 @@ public class PrviJdbcServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         // implementacija
-
+        resp.getWriter().println("TEST TEST TEST :) ");
+        resp.getWriter().println("TEST TEST TEST :) ");
     }
 }
