@@ -2,6 +2,8 @@ package Servlets;
 
 import com.kumuluz.ee.common.config.EeConfig;
 import com.kumuluz.ee.configuration.utils.ConfigurationUtil;
+import jdbc.Uporabnik;
+import jdbc.UporabnikDaoImpl;
 
 import javax.servlet.*;
 import javax.servlet.annotation.*;
@@ -24,5 +26,10 @@ public class PrviJdbcServlet extends HttpServlet {
         resp.getWriter().println(imeStoritve.get().split("\\Q[\\E")[0]);
         resp.getWriter().println(verzijaOkolja.get().split("\\Q[\\E")[0]);
         resp.getWriter().println(imeOkolja.get().split("\\Q[\\E")[0]);
+
+        UporabnikDaoImpl dao = new UporabnikDaoImpl();
+        Uporabnik uporabnik = (Uporabnik) dao.vrni(1);
+        resp.getWriter().println(uporabnik.getIme()+" "+uporabnik.getPriimek() + " "+ uporabnik.getUporabniskoIme());
+
     }
 }
