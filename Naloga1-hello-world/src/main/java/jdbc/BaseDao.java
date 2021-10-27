@@ -3,16 +3,16 @@ package jdbc;
 import java.sql.Connection;
 import java.util.List;
 
-public interface BaseDao {
+public interface BaseDao <T extends Entiteta>{
     Connection getConnection();
 
-    Entiteta vrni(int id);
+    T vrni(int id);
 
-    void vstavi(Entiteta ent);
+    void vstavi(T ent);
 
     void odstrani(int id);
 
-    void posodobi(Entiteta ent);
+    void posodobi(T ent);
 
-    List<Entiteta> vrniVse();
+    List<T> vrniVse();
 }
