@@ -28,8 +28,14 @@ public class PrviJdbcServlet extends HttpServlet {
         resp.getWriter().println(imeOkolja.get().split("\\Q[\\E")[0]);
 
         UporabnikDaoImpl dao = new UporabnikDaoImpl();
-        Uporabnik uporabnik = (Uporabnik) dao.vrni(1);
+        Uporabnik uporabnik = dao.vrni(1);
         resp.getWriter().println(uporabnik.getIme()+" "+uporabnik.getPriimek() + " "+ uporabnik.getUporabniskoIme());
+
+
+        dao.vstavi(new Uporabnik("Jaz", "Ti", "On"));
+
+        Uporabnik uporabnik3 = dao.vrni(3);
+        resp.getWriter().println(uporabnik3.getIme()+" "+uporabnik3.getPriimek() + " "+ uporabnik3.getUporabniskoIme());
 
     }
 }

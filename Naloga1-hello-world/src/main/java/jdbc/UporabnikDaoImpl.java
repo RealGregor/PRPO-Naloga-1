@@ -9,18 +9,18 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class UporabnikDaoImpl implements BaseDao{
+public class UporabnikDaoImpl implements BaseDao<Uporabnik> {
     private static UporabnikDaoImpl daoInstance;
     Connection con = null;
     private Logger log = Logger.getLogger(UporabnikDaoImpl.class.getName());
 
     @Override
     public Connection getConnection() {
-        try{
+        try {
             InitialContext initCtx = new InitialContext();
             DataSource ds = (DataSource) initCtx.lookup("jdbc/SimpleJdbcDS");
             return ds.getConnection();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -29,12 +29,12 @@ public class UporabnikDaoImpl implements BaseDao{
     private Uporabnik getUporabnikFromRS(ResultSet rs) throws SQLException {
         String ime = rs.getString("ime");
         String priimek = rs.getString("priimek");
-        String uporabniskoIme = rs.getString("uporabniskoIme");
+        String uporabniskoIme = rs.getString("uporabniskoime");
         return new Uporabnik(ime, priimek, uporabniskoIme);
     }
 
     @Override
-    public Entiteta vrni(int id) {
+    public Uporabnik vrni(int id) {
         PreparedStatement ps = null;
 
         try {
@@ -48,9 +48,9 @@ public class UporabnikDaoImpl implements BaseDao{
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                return getUporabnikFromRS(rs);
+            return getUporabnikFromRS(rs);
             } else {
-                log.info("Uporabnik ne obstaja");
+            log.info("Uporabnik ne obstaja");
             }
 
         } catch (SQLException e) {
@@ -68,8 +68,41 @@ public class UporabnikDaoImpl implements BaseDao{
     }
 
     @Override
-    public void vstavi(Entiteta ent) {
+    public void vstavi(Uporabnik user) {
+        PreparedStatement ps = null;
 
+        try {
+            if (con == null) {
+                con = getConnection();
+            }
+
+            String sql = "INSERT INTO uporabnik (ime, priimek, uporabniskoime) VALUES (?, ?, ?)";
+            ps = con.prepareStatement(sql);
+
+            ps.setString(1, user.getIme());
+            ps.setString(2, user.getPriimek());
+            ps.setString(3, user.getUporabniskoIme());
+            // ps.setInt(1, user.getId());
+
+            ResultSet rs = ps.executeQuery();
+
+            // if (rs.next()) {
+            //     return getUporabnikFromRS(rs);
+            // } else {
+            //     log.info("Uporabnik ne obstaja");
+            // }
+
+        } catch (SQLException e) {
+            log.severe(e.toString());
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    log.severe(e.toString());
+                }
+            }
+        }
     }
 
     @Override
@@ -78,12 +111,12 @@ public class UporabnikDaoImpl implements BaseDao{
     }
 
     @Override
-    public void posodobi(Entiteta ent) {
+    public void posodobi(Uporabnik user) {
 
     }
 
     @Override
-    public List<Entiteta> vrniVse() {
+    public List<Uporabnik> vrniVse() {
         return null;
     }
 }
