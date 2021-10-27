@@ -28,14 +28,39 @@ public class PrviJdbcServlet extends HttpServlet {
         resp.getWriter().println(imeOkolja.get().split("\\Q[\\E")[0]);
 
         UporabnikDaoImpl dao = new UporabnikDaoImpl();
+
+        //? Vrni
         Uporabnik uporabnik = dao.vrni(1);
-        resp.getWriter().println(uporabnik.getIme()+" "+uporabnik.getPriimek() + " "+ uporabnik.getUporabniskoIme());
+        resp.getWriter().println("Vrni: " + uporabnik.getIme()+" "+uporabnik.getPriimek() + " "+ uporabnik.getUporabniskoIme());
+
+        //? Vstavi
+        var newUporabnik = new Uporabnik("Vstavi ime", "Vstavi priimek", "Vstavi uporabniskoime");
+        newUporabnik.setId(6);
+        dao.vstavi(newUporabnik);
 
 
-        dao.vstavi(new Uporabnik("Jaz", "Ti", "On"));
+        Uporabnik uporabnik3 = dao.vrni(6);
+        resp.getWriter().println("\nVstavi: " + uporabnik3.getIme()+" "+uporabnik3.getPriimek() + " "+ uporabnik3.getUporabniskoIme());
 
-        Uporabnik uporabnik3 = dao.vrni(3);
-        resp.getWriter().println(uporabnik3.getIme()+" "+uporabnik3.getPriimek() + " "+ uporabnik3.getUporabniskoIme());
+        //? Izbriši
+        dao.odstrani(6);
+        
+        //? Posodobi
+        Uporabnik update = dao.vrni(3);
+        resp.getWriter().println("\nPred Posodobi:" + update.getIme()+" "+update.getPriimek() + " "+ update.getUporabniskoIme());
+        update.setIme(update.getIme() + "+1");
 
+        dao.posodobi(update);
+
+        var updated = dao.vrni(update.getId());
+        resp.getWriter().println("\nPo Posodobi:" + updated.getIme()+" "+updated.getPriimek() + " "+ updated.getUporabniskoIme());
+
+
+        //? Vrni vse
+        resp.getWriter().println("\nVsi uporabniki: ");
+        var vsi = dao.vrniVse();
+        for (Uporabnik x : vsi) {
+            resp.getWriter().println(x.getIme()+" "+x.getPriimek() + " "+ x.getUporabniskoIme());
+        }
     }
 }
