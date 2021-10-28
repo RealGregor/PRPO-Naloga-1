@@ -1,9 +1,9 @@
 package jdbc;
 
 public class Uporabnik extends Entiteta{
-    String ime;
-    String priimek;
-    String uporabniskoIme;
+    private String ime;
+    private String priimek;
+    private String uporabniskoIme;
 
     public Uporabnik(String ime, String priimek, String uporabniskoIme){
         this.ime = ime;
